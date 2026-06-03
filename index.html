@@ -469,7 +469,7 @@ document.ondrop=function(e){
 };
 
 function openPreset(d,name){
-  D=d;P=Array.isArray(d.prompts)?d.prompts:[];OM={};CS={};undos=[];redos=[];
+  D=d;D._filename=name?name.replace(/\.json$/i,''):'';P=Array.isArray(d.prompts)?d.prompts:[];OM={};CS={};undos=[];redos=[];
   if(Array.isArray(d.prompt_order))d.prompt_order.forEach(function(co,ci){
     if(Array.isArray(co.order))co.order.forEach(function(e,oi){
       if(e.identifier)OM[e.identifier]={enabled:e.enabled!==false,oi:oi,ci:ci};
@@ -534,7 +534,7 @@ document.getElementById('btnExport').onclick=function(){
     });
     var b=new Blob([JSON.stringify(out,null,2)],{type:'application/json;charset=utf-8'});
     var u=URL.createObjectURL(b),a=document.createElement('a');
-    a.href=u;a.download=(D.name||'preset')+'_trimmed.json';
+    a.href=u;a.download=(D.name||D._filename||'preset')+'-裁剪.json';
     document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(u);
     toast('已下载','ok');
   });
